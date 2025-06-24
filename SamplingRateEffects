@@ -1,0 +1,28 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Signal parameters
+frequency = 10  # Hz (sine wave frequency)
+duration = 1.0  # seconds
+
+# Define multiple sampling rates
+sampling_rates = [10, 50, 100, 1000]  # Hz
+
+# Plotting the time domain
+
+plt.figure(figsize=(14, 6))
+
+for i, fs in enumerate(sampling_rates, 1):
+    t = np.linspace(0, duration, int(fs * duration), endpoint=False)
+    signal = np.sin(2 * np.pi * frequency * t)
+
+    plt.subplot(len(sampling_rates), 1, i)
+    plt.plot(t, signal, marker='o')
+    plt.title(f"Sampling Rate = {fs} Hz")
+    plt.xlabel("Time [s]")
+    plt.ylabel("Amplitude")
+    plt.grid(True)
+
+plt.tight_layout()
+plt.suptitle("Effect of Sampling Rate on Signal Representation", fontsize=16, y=1.02)
+plt.show()
