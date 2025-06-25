@@ -1,0 +1,22 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import butter, filtfilt
+
+# Generate a sample signal: sine wave + noise
+fs = 500  # Sampling frequency (Hz)
+t = np.linspace(0, 1, fs, endpoint=False)
+clean_signal = np.sin(2 * np.pi * 5 * t)  # 5 Hz sine wave
+noise = np.random.normal(0, 0.5, t.shape)
+noisy_signal = clean_signal + noise
+
+# Plotting
+plt.figure(figsize=(12, 6))
+plt.plot(t, noisy_signal, label='Noisy Signal', alpha=0.5)
+plt.plot(t, clean_signal, label='Original Signal', linestyle='--')
+plt.xlabel('Time [seconds]')
+plt.ylabel('Amplitude')
+plt.title('Noise and its Effects to the Signal')
+plt.legend()
+plt.grid()
+plt.tight_layout()
+plt.show()
