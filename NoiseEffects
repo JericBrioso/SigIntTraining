@@ -1,14 +1,28 @@
-#Noise and Its Effects
+# Add noise
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import butter, filtfilt
 
+
+SNR_dB = -20
+freq = 50 #Hz
+
+def add_awgn(signal, snr_db):
+    signal_power = np.mean(np.abs(signal)**2)
+    snr_linear = 10**(snr_db / 10)
+    noise_power = signal_power / snr_linear
+    noise = np.sqrt(noise_power / 2) * (np.random.randn(*signal.shape) + 1j * np.random.randn(*signal.shape))
+    return signal + noise
+
+
+
 # Generate a sample signal: sine wave + noise
 fs = 500  # Sampling frequency (Hz)
 t = np.linspace(0, 1, fs, endpoint=False)
-clean_signal = np.sin(2 * np.pi * 5 * t)  # 5 Hz sine wave
-noise = np.random.normal(0, 0.5, t.shape)
-noisy_signal = clean_signal + noise
+clean_signal = np.sin(2 * np.pi * freq * t)  # 5 Hz sine wave
+#noise = np.random.normal(0, 0.5, t.shape)
+noisy_signal = add_awgn(clean_signal, SNR_dB)
 
 # Plotting
 plt.figure(figsize=(12, 6))
