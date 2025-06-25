@@ -1,0 +1,55 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Signal parameters
+duration = 0.5        # seconds
+sampling_rate = 10000  # Hz
+t = np.linspace(0, duration, int(sampling_rate * duration), endpoint=False)
+
+# Define two signals
+freq1 = 15   # Hz
+freq2 = 50  # Hz
+
+#Amplitudes
+amplitude1 = 1
+amplitude2 = 0.7
+
+signal1 = amplitude1*np.sin(2 * np.pi * freq1 * t)
+signal2 = amplitude2*np.sin(2 * np.pi * freq2 * t)
+
+# Mixed signal
+mixed_signal = signal1 + signal2
+
+# Carrier signal
+fc = 100  # Carrier frequency in Hz
+Ac = 1    # Carrier amplitude
+carrier = Ac * np.cos(2 * np.pi * fc * t)
+
+# AM Modulated signal
+mod_index = 1  # Modulation index (0 < m ≤ 1 for standard AM)
+am_signal = (1 + mod_index * mixed_signal) * carrier
+
+# Plotting
+plt.figure(figsize=(12, 8))
+
+plt.subplot(3, 1, 1)
+plt.plot(t, mixed_signal)
+plt.title("Message Signal (Modulating Signal)")
+plt.ylabel("Amplitude")
+plt.grid(True)
+
+plt.subplot(3, 1, 2)
+plt.plot(t, carrier, color='orange')
+plt.title("Carrier Signal")
+plt.ylabel("Amplitude")
+plt.grid(True)
+
+plt.subplot(3, 1, 3)
+plt.plot(t, am_signal, color='green')
+plt.title("AM Modulated Signal")
+plt.xlabel("Time [s]")
+plt.ylabel("Amplitude")
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
