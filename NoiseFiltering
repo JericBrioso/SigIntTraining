@@ -1,0 +1,37 @@
+#Noise Filtering
+#Applying filter to recover the original signal
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import butter, filtfilt
+
+# Generate a sample signal: sine wave + noise
+fs = 500  # Sampling frequency (Hz)
+t = np.linspace(0, 1, fs, endpoint=False)
+clean_signal = np.sin(2 * np.pi * 5 * t)  # 5 Hz sine wave
+noise = np.random.normal(0, 0.5, t.shape)
+noisy_signal = clean_signal + noise
+
+# Butterworth low-pass filter design
+def butter_lowpass_filter(data, cutoff, fs, order=5):
+    nyq = 0.5 * fs  # Nyquist frequency
+    normal_cutoff = cutoff / nyq
+    b, a = butter(order, normal_cutoff, btype='low', analog=False)
+    y = filtfilt(b, a, data)
+    return y
+
+# Apply the filter
+cutoff_frequency = 10  # Hz
+filtered_signal = butter_lowpass_filter(noisy_signal, cutoff_frequency, fs)
+
+# Plotting
+plt.figure(figsize=(14, 6))
+plt.plot(t, noisy_signal, label='Noisy Signal', alpha=0.5)
+plt.plot(t, filtered_signal, label='Filtered Signal', linewidth=2)
+plt.plot(t, clean_signal, label='Original Signal', linestyle='--')
+plt.xlabel('Time [seconds]')
+plt.ylabel('Amplitude')
+plt.title('Noise Elimination using Low-pass Butterworth Filter')
+plt.legend()
+plt.grid()
+plt.tight_layout()
+plt.show()
